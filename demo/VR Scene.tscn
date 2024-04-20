@@ -1,0 +1,103 @@
+[gd_scene load_steps=12 format=3 uid="uid://bqcabls2xrdk0"]
+
+[ext_resource type="PackedScene" uid="uid://b8s0hc8tiheat" path="res://addons/Godot-VR-UI/demo/UI Scene.tscn" id="1_c663d"]
+[ext_resource type="PackedScene" uid="uid://b3elqexfi5rb0" path="res://addons/Godot-VR-UI/scenes/ui_panel.tscn" id="3_56702"]
+[ext_resource type="Script" path="res://addons/Godot-VR-UI/scripts/UseXR.cs" id="3_l610r"]
+[ext_resource type="PackedScene" uid="uid://ta178svgkj7b" path="res://addons/Godot-Extras-main/Axis Helper/Axis Helper.tscn" id="4_2f7mw"]
+[ext_resource type="Script" path="res://addons/Godot-VR-UI/scripts/LaserPointer.cs" id="5_b3iwp"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1ffg5"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_nvsnd"]
+sky_material = SubResource("ProceduralSkyMaterial_1ffg5")
+
+[sub_resource type="Environment" id="Environment_xolhr"]
+background_mode = 2
+sky = SubResource("Sky_nvsnd")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0nw7"]
+albedo_color = Color(0.352941, 0.352941, 0.352941, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ggylk"]
+material = SubResource("StandardMaterial3D_k0nw7")
+size = Vector2(5, 5)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_4e5lc"]
+data = PackedVector3Array(2.5, 0, 2.5, -2.5, 0, 2.5, 2.5, 0, -2.5, -2.5, 0, 2.5, -2.5, 0, -2.5, 2.5, 0, -2.5)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xolhr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+script = ExtResource("3_l610r")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15958, 0)
+
+[node name="left_hand" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+pose = &"palm"
+
+[node name="right_hand" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+pose = &"palm"
+
+[node name="left_aim" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+pose = &"aim"
+
+[node name="Axis Helper" parent="XROrigin3D/left_aim" instance=ExtResource("4_2f7mw")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="right_aim" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+pose = &"aim"
+
+[node name="Axis Helper" parent="XROrigin3D/right_aim" instance=ExtResource("4_2f7mw")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="LaserPointer" type="RayCast3D" parent="XROrigin3D/right_aim"]
+target_position = Vector3(0, 0, -5)
+collision_mask = 256
+script = ExtResource("5_b3iwp")
+Reticle = ExtResource("4_2f7mw")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_ggylk")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_4e5lc")
+
+[node name="ui_panel1" parent="." instance=ExtResource("3_56702")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13835, -1.278)
+skeleton = NodePath("")
+UIScene = ExtResource("1_c663d")
+PanelSize = Vector2(1, 2)
+ResolutionScale = 512
+
+[node name="ui_panel2" parent="." instance=ExtResource("3_56702")]
+transform = Transform3D(0.832176, 0, 0.554511, 0, 1, 0, -0.554511, 0, 0.832176, -1.05796, 1.18321, -0.947737)
+skeleton = NodePath("")
+UIScene = ExtResource("1_c663d")
+ResolutionScale = 512
+
+[node name="ui_panel3" parent="." instance=ExtResource("3_56702")]
+transform = Transform3D(0.831954, 0, -0.554844, 0, 1, 0, 0.554844, 0, 0.831954, 1.058, 1.18357, -0.948)
+skeleton = NodePath("")
+UIScene = ExtResource("1_c663d")
+ResolutionScale = 512
+
+[connection signal="button_pressed" from="XROrigin3D/right_aim" to="XROrigin3D/right_aim/LaserPointer" method="OnButtonPressed"]
+[connection signal="button_released" from="XROrigin3D/right_aim" to="XROrigin3D/right_aim/LaserPointer" method="OnButtonReleased"]

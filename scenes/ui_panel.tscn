@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3elqexfi5rb0"]
+
+[ext_resource type="Script" path="res://addons/Godot-VR-UI/scripts/UIPanel.cs" id="1_5tf7l"]
+
+[node name="ui_panel" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_5tf7l")
+UICollisionLayer = 256
+PanelSize = Vector2(1, 1)
+ResolutionScale = 256

@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://1sexoijy4031"]
+
+[ext_resource type="Script" path="res://Scripts/Testing/TriggerInputEventMouseButton.cs" id="1_ro3ft"]
+
+[node name="ViewportEventTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 202.0
+offset_right = 102.0
+offset_bottom = 302.0
+text = "Press me!"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_right = 400.0
+offset_bottom = 100.0
+text = "Presses the other button"
+
+[node name="Node" type="Node" parent="Button2"]
+script = ExtResource("1_ro3ft")
+
+[connection signal="button_down" from="Button2" to="Button2/Node" method="TriggerEvent" binds= [0, Vector2(50, 250), true]]
+[connection signal="button_up" from="Button2" to="Button2/Node" method="TriggerEvent" binds= [0, Vector2(50, 250), false]]
