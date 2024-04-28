@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://bqcabls2xrdk0"]
+[gd_scene load_steps=11 format=3 uid="uid://bqcabls2xrdk0"]
 
+[ext_resource type="PackedScene" uid="uid://dod2lkyk6cwv8" path="res://addons/Godot-VR-UI/scenes/UICameraRig.tscn" id="1_3jlji"]
 [ext_resource type="PackedScene" uid="uid://b8s0hc8tiheat" path="res://addons/Godot-VR-UI/demo/UI Scene.tscn" id="1_c663d"]
 [ext_resource type="PackedScene" uid="uid://b3elqexfi5rb0" path="res://addons/Godot-VR-UI/scenes/ui_panel.tscn" id="3_56702"]
-[ext_resource type="Script" path="res://addons/Godot-VR-UI/scripts/UseXR.cs" id="3_l610r"]
 [ext_resource type="PackedScene" uid="uid://ta178svgkj7b" path="res://addons/Godot-Extras-main/Axis Helper/Axis Helper.tscn" id="4_2f7mw"]
-[ext_resource type="Script" path="res://addons/Godot-VR-UI/scripts/LaserPointer.cs" id="5_b3iwp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1ffg5"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -38,38 +37,14 @@ environment = SubResource("Environment_xolhr")
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="XROrigin3D" type="XROrigin3D" parent="."]
-script = ExtResource("3_l610r")
+[node name="UICameraRig" parent="." instance=ExtResource("1_3jlji")]
 
-[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15958, 0)
+[node name="UIPointer" parent="UICameraRig/LeftAim" index="0"]
+UseReticle = true
+Reticle = ExtResource("4_2f7mw")
 
-[node name="left_hand" type="XRController3D" parent="XROrigin3D"]
-tracker = &"left_hand"
-pose = &"palm"
-
-[node name="right_hand" type="XRController3D" parent="XROrigin3D"]
-tracker = &"right_hand"
-pose = &"palm"
-
-[node name="left_aim" type="XRController3D" parent="XROrigin3D"]
-tracker = &"left_hand"
-pose = &"aim"
-
-[node name="Axis Helper" parent="XROrigin3D/left_aim" instance=ExtResource("4_2f7mw")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
-
-[node name="right_aim" type="XRController3D" parent="XROrigin3D"]
-tracker = &"right_hand"
-pose = &"aim"
-
-[node name="Axis Helper" parent="XROrigin3D/right_aim" instance=ExtResource("4_2f7mw")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
-
-[node name="LaserPointer" type="RayCast3D" parent="XROrigin3D/right_aim"]
-target_position = Vector3(0, 0, -5)
-collision_mask = 256
-script = ExtResource("5_b3iwp")
+[node name="UIPointer" parent="UICameraRig/RightAim" index="0"]
+UseReticle = true
 Reticle = ExtResource("4_2f7mw")
 
 [node name="Floor" type="MeshInstance3D" parent="."]
@@ -99,5 +74,4 @@ skeleton = NodePath("")
 UIScene = ExtResource("1_c663d")
 ResolutionScale = 512
 
-[connection signal="button_pressed" from="XROrigin3D/right_aim" to="XROrigin3D/right_aim/LaserPointer" method="OnButtonPressed"]
-[connection signal="button_released" from="XROrigin3D/right_aim" to="XROrigin3D/right_aim/LaserPointer" method="OnButtonReleased"]
+[editable path="UICameraRig"]
