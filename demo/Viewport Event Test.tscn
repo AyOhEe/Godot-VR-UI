@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://1sexoijy4031"]
 
-[ext_resource type="Script" path="res://Scripts/Testing/TriggerInputEventMouseButton.cs" id="1_ro3ft"]
+[ext_resource type="Script" uid="uid://flwqn6v13pr" path="res://Scripts/Testing/TriggerInputEventMouseButton.cs" id="1_ro3ft"]
 
 [node name="ViewportEventTest" type="Control"]
 layout_mode = 3

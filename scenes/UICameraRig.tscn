@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dod2lkyk6cwv8"]
 
 [ext_resource type="PackedScene" uid="uid://cyb2l1vcms8n0" path="res://addons/Godot-OpenXR-Startup/OpenXR Startup/CameraRig.tscn" id="1_e4xwq"]
-[ext_resource type="Script" path="res://addons/Godot-VR-UI/scripts/LaserPointer.cs" id="2_m2wmd"]
+[ext_resource type="Script" uid="uid://dsjdoacegcr88" path="res://addons/Godot-VR-UI/scripts/LaserPointer.cs" id="2_m2wmd"]
 
 [node name="UICameraRig" instance=ExtResource("1_e4xwq")]
 
